@@ -19,6 +19,8 @@ parser.add_argument('--epochs', type=int, default=25,
 					 during training')
 parser.add_argument('--cuda', type=bool, default=False,
 					 help='(Bool) : True => GPU Training, False => CPU')
+parser.add_argument('--dataset', type=str, default='mnist',
+					 help='(Str) : mnist || dsprites')
 args = parser.parse_args()
 
 def run():
@@ -29,9 +31,11 @@ def run():
 
 	device = torch.device('cuda' if args.cuda else 'cpu')
 
-	data = np.load(config['data_path'], encoding='bytes')
-	
-	data_loader = create_data_loader(data['imgs'], args.batch_size)
+	data = np.load(config['data_path'][args.dataset], encoding='bytes')
+
+	data_loader = create_data_loader(data=data['imgs'],
+									 batch_size=args.batch_size,
+									 dset_name=args.dataset)
 
 	D_in = D_out = config['img_dim']**2
 	H = 100
