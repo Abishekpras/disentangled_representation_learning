@@ -12,5 +12,10 @@ config = {'data_folder' : os.path.join(os.getcwd(), DATA_FOLDER),
 		  				 						DATA_FOLDER,
 		  				 						MNIST_FILENAME)
 		  				},
-		  'img_dim' : 64
+		  'data_size' : {'dsprites' : 740000,
+		  				 'mnist' : 60000,
+		  				},
+		  'batch_size' : 256,
+		  'img_dim' : 64,
+		  'device' : 'cpu'
 		 }

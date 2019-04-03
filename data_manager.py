@@ -4,6 +4,7 @@ import numpy as np
 
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
+from torchvision.datasets import MNIST
 import torchvision.transforms.functional as F
 from config import config
 
@@ -21,14 +22,15 @@ class custom_dataset(Dataset):
 				self.transform(pil_img(self.data[ix]))
 			return self.data[ix].view(-1, 1)
 
-def create_data_loader(data, batch_size, dset_name='dsprites'):
+def mnist_loader():
+	data_loader = DataLoader(MNIST('../data', train=True, download=True,
+							transform=transforms.ToTensor()),
+							batch_size=config['batch_size'], shuffle=True)
+	return data_loader
+
+def dsprites_loader(data, batch_size):
 
 	data_transform = None
-	if dset_name == 'mnist':
-		logging.warn('TESTING WITH MNIST DATA')
-		data_transform = transforms.Compose([transforms.ToTensor(),
-									transforms.Normalize((0.1307,), (0.3081,))])
-
 	dset = custom_dataset(data, data_transform)
 	data_loader = DataLoader(dset, batch_size=batch_size,
 							 shuffle=True, drop_last=True)
